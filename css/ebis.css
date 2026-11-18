@@ -15,9 +15,14 @@
 /*                                                                                                                   */
 /*********************************************************************************************************************/
 
-:root { --color-text:       #111111   ;
-        --color-background: #FFFFFF   ;
-        --color-border:     #CACACA;  }
+:root { --color-text:       #111111     ;
+        --color-background: #FFFFFF     ;
+        --color-border:     #CACACA;    }
+
+@media (prefers-color-scheme: dark)     {
+:root { --color-text:       #CACACA     ;
+        --color-background: #111111     ;
+        --color-border:     #333333;  } }
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
@@ -26,7 +31,7 @@
 /*********************************************************************************************************************/
 
 *, *::before, *::after  { box-sizing: border-box;                                                   }
-html                    { color-scheme: light;                                                      }
+html                    { color-scheme: light dark;                                                 }
 body                    { margin: 0; color: var(--color-text); background: var(--color-background)  ;
                           font-family: "Roboto", Arial, sans-serif; -webkit-text-size-adjust: 100%  ;
                           font-size: 14px; line-height: 1.55; letter-spacing: 0.01rem;              }
