@@ -1,4 +1,4 @@
-# e-bis.fr
+# e-bis
 
 My personal CV & Portfolio showcase website.
 
