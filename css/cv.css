@@ -1,0 +1,82 @@
+/*********************************************************************************************************************/
+/*                                                                                                                   */
+/*                                                     CV PAGES                                                      */
+/*                                                                                                                   */
+/*********************************************************************************************************************/
+
+.cv                     { font-size: 16px; line-height: 1.55;                               }
+.cv .page               { max-width: 832px; padding-top: 80px;                              }
+.cv h1                  { font-size: 2.8rem;                                                }
+.header-subtitle        { margin-top: 4px; font-family: "Open Sans", Arial, sans-serif      ;
+                          font-weight: 700; font-size: 1.8rem; line-height: 1.4;            }
+.cv-navigation          { display: flex; flex-wrap: wrap; gap: 10px 24px; font-size: 14px;  }
+.cv-navigation a        { text-decoration: underline; text-underline-offset: 3px;           }
+.cv-navigation a:hover  { text-decoration-thickness: 2px;                                   }
+.summary-entry:hover    { text-decoration: underline; text-underline-offset: 3px;           }
+.cv-section             { margin-top: 36px; padding-top: 30px                               ;
+                          border-top: 1px solid var(--color-border);                        }
+.cv-section h2          { margin-bottom: 26px; font-size: 1.8rem; line-height: 1.4;         }
+.cv-section, .cv-entry  { scroll-margin-top: 24px;                                          }
+.cv .header-details     { display: flex; flex-direction: column; gap: 2px                   ;
+                          font-size: 16px; text-align: left;                                }
+.cv-introduction        { margin-bottom: 30px; line-height: 1.75;                           }
+
+/*********************************************************************************************************************/
+/*                                                                                                                   */
+/*                                                   CAREER SUMMARY                                                  */
+/*                                                                                                                   */
+/*********************************************************************************************************************/
+
+.career-summary                 { display: grid; column-gap: 24px                               ;
+                                  grid-template-columns: max-content fit-content(50%) minmax(0, 1fr); }
+
+.summary-entry                  { display: grid; grid-column: 1 / -1                            ;
+                                  grid-template-columns: subgrid; padding: 5px 0;                 }
+
+.summary-entry span             { min-width: 0; overflow-wrap: anywhere;                          }
+.summary-entry span:first-child { font-variant-numeric: tabular-nums;                             }
+
+/*********************************************************************************************************************/
+/*                                                                                                                   */
+/*                                                      SKILLS                                                       */
+/*                                                                                                                   */
+/*********************************************************************************************************************/
+
+.skill-list     { display: grid; grid-template-columns: fit-content(35%) minmax(0, 1fr) ;
+                  gap: 8px 64px; margin: 0;                                             }
+.skill-list dt,
+.skill-list dd  { min-width: 0; overflow-wrap: anywhere;                                  }
+.skill-list dd  { margin: 0;                                                             }
+
+/*********************************************************************************************************************/
+/*                                                                                                                   */
+/*                                                    EXPERIENCE                                                     */
+/*                                                                                                                   */
+/*********************************************************************************************************************/
+
+.cv-entry + .cv-entry { margin-top: 40px;                                       }
+.cv-entry h3          { margin: 0; font-family: "Open Sans", Arial, sans-serif  ;
+                        font-weight: 700; font-size: 1.5rem; line-height: 1.4;  }
+.entry-details        { margin-top: 6px; margin-bottom: 22px;                   }
+.cv-entry > p + p     { margin-top: 18px;                                       }
+.cv-entry ul          { margin: 18px 0 0; padding-left: 22px;                   }
+.cv-entry li          { margin: 4px 0;                                          }
+
+/*********************************************************************************************************************/
+/*                                                                                                                   */
+/*                                                      MOBILE                                                       */
+/*                                                                                                                   */
+/*********************************************************************************************************************/
+
+@media (max-width: 620px)                                                               {
+.cv .page             { padding-top: 52px;                                              }
+.cv h1                { font-size: 34px;                                                }
+.header-subtitle      { font-size: 24px;                                                }
+.cv-section h2        { font-size: 24px;                                                }
+.cv-entry h3          { font-size: 21px;                                                }
+.career-summary       { grid-template-columns: max-content minmax(0, 1fr)               ;
+                        column-gap: 14px;                                               }
+.summary-entry        { gap: 4px 14px; padding: 8px 0;                                  }
+.summary-entry span:last-child  { grid-column: 2;                                       }
+.skill-list           { grid-template-columns: 1fr; gap: 4px;                           }
+.skill-list dd        { margin-bottom: 12px;                                          } }
