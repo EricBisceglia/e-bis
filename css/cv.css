@@ -18,7 +18,7 @@
 .cv-section h2          { margin-bottom: 26px; font-size: 1.8rem; line-height: 1.4;         }
 .cv-section, .cv-entry  { scroll-margin-top: 24px;                                          }
 .cv .header-details     { display: flex; flex-direction: column; gap: 2px                   ;
-                          font-size: 16px; text-align: left;                                }
+                          font-size: 16px; text-align: right;                               }
 .cv-introduction        { margin-bottom: 30px; line-height: 1.75;                           }
 
 /*********************************************************************************************************************/
@@ -71,6 +71,7 @@
 @media (max-width: 620px)                                                               {
 .cv .page             { padding-top: 52px;                                              }
 .cv h1                { font-size: 34px;                                                }
+.cv .header-details   { text-align: left;                                               }
 .header-subtitle      { font-size: 24px;                                                }
 .cv-section h2        { font-size: 24px;                                                }
 .cv-entry h3          { font-size: 21px;                                                }

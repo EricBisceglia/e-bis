@@ -1,26 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Éric Bisceglia</title>
-    <meta name="description" content="Éric Bisceglia">
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon.ico">
-    <link rel="stylesheet" href="./css/ebis.css">
-    <link rel="stylesheet" href="./css/cv.css">
-  </head>
+<?php /***************************************************************************************************************/
+/*                                                                                                                   */
+/*                                                       SETUP                                                       */
+/*                                                                                                                   */
+/*********************************************************************************************************************/
+// File inclusions
+include_once __DIR__.'/inc/includes.inc.php'; # Core
+include_once __DIR__.'/lang/main.lang.php';   # Translations
+
+// Page settings
+$page_stylesheet = 'cv';
+
+
+
+
+/*********************************************************************************************************************/
+/*                                                                                                                   */
+/*                                                     FRONT END                                                     */
+/*                                                                                                                   */
+/**********************************************************************/ include_once __DIR__.'/inc/header.inc.php'; ?>
 
   <body class="cv">
     <div class="page">
 
       <header class="header-name">
         <div>
-          <h1>Éric Bisceglia</h1>
-          <p class="header-subtitle">Tech management</p>
+          <h1><?=__('site_name')?></h1>
+          <p class="header-subtitle"><?=__('home_tech')?></p>
         </div>
 
         <div class="header-details">
-          <span>Paris, France</span>
+          <span><?=__('cv_location')?></span>
+          <span><?=__('cv_age')?></span>
+          <span><?=__('cv_in_tech')?></span>
+          <a class="language-switch" href="?lang=<?=$lang_other?>">
+            <?=__('site_language')?>
+          </a>
         </div>
       </header>
 
@@ -31,15 +45,17 @@
         </p>
 
         <nav class="cv-navigation">
-          <a href="./">Home</a>
-          <span>Tech</span>
-          <a href="./cybersecurity">Cybersecurity</a>
-          <a href="./gamedesign">Game design</a>
-          <a href="https://www.linkedin.com/in/eric-bisceglia" target="_blank">Contact</a>
+          <a href="./"><?=__('cv_home')?></a>
+          <span><?=__('cv_tech')?></span>
+          <a href="./cybersecurity"><?=__('cv_security')?></a>
+          <a href="./gamedesign"><?=__('cv_games')?></a>
+          <a href="https://www.linkedin.com/in/eric-bisceglia" target="_blank">
+            <?=__('cv_contact')?>
+          </a>
         </nav>
 
         <section class="cv-section" id="career-summary">
-          <h2>Career summary</h2>
+          <h2><?=__('cv_summary')?></h2>
           <div class="career-summary">
             <a class="summary-entry" href="#some-job">
               <span>2006</span>
@@ -55,7 +71,7 @@
         </section>
 
         <section class="cv-section" id="skills">
-          <h2>Skills</h2>
+          <h2><?=__('cv_skills')?></h2>
           <dl class="skill-list">
             <dt>Skill name</dt>
             <dd>Skil description · Other things · More text · Lorem skillum</dd>
@@ -65,7 +81,7 @@
         </section>
 
         <section class="cv-section" id="career">
-          <h2>Detailed career</h2>
+          <h2><?=__('cv_career')?></h2>
           <article class="cv-entry" id="some-job">
             <h3>Some company name</h3>
             <div class="entry-details">

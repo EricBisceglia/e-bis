@@ -2,4 +2,4 @@ Options -MultiViews
 RewriteEngine On
 
 # CV/portfolio pages
-RewriteRule ^tech$ tech.html [END]
+RewriteRule ^tech$ tech.php [END]

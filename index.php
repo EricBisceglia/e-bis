@@ -6,19 +6,17 @@
 // File inclusions
 include_once __DIR__.'/inc/includes.inc.php'; # Core
 include_once __DIR__.'/lang/main.lang.php';   # Translations
-?>
 
-<!DOCTYPE html>
-<html lang="<?=$lang_lower?>">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?=__('site_name')?></title>
-    <meta name="description" content="<?=__('site_name')?>">
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon.ico">
-    <link rel="stylesheet" href="./css/ebis.css">
-    <link rel="stylesheet" href="./css/homepage.css">
-  </head>
+// Page settings
+$page_stylesheet = 'homepage';
+
+
+
+/*********************************************************************************************************************/
+/*                                                                                                                   */
+/*                                                     FRONT END                                                     */
+/*                                                                                                                   */
+/**********************************************************************/ include_once __DIR__.'/inc/header.inc.php'; ?>
 
   <body>
     <div class="page">
