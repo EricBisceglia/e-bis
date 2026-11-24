@@ -25,5 +25,7 @@ $path = $path ?? './';
     <meta name="description" content="<?=__('site_name')?>">
     <link rel="icon" type="image/png" sizes="32x32" href="<?=$path?>favicon.ico">
     <link rel="stylesheet" href="<?=$path?>css/ebis.css">
+    <link rel="stylesheet" href="<?=$path?>css/light.css">
+    <link rel="stylesheet" href="<?=$path?>css/dark.css" media="<?=$theme_media?>">
     <link rel="stylesheet" href="<?=$path?>css/<?=$page_stylesheet?>.css">
   </head>

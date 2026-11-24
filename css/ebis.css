@@ -11,27 +11,11 @@
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
-/*                                                      COLORS                                                       */
-/*                                                                                                                   */
-/*********************************************************************************************************************/
-
-:root { --color-text:       #111111     ;
-        --color-background: #FFFFFF     ;
-        --color-border:     #CACACA;    }
-
-@media (prefers-color-scheme: dark)     {
-:root { --color-text:       #CACACA     ;
-        --color-background: #111111     ;
-        --color-border:     #333333;  } }
-
-/*********************************************************************************************************************/
-/*                                                                                                                   */
 /*                                                      GENERAL                                                      */
 /*                                                                                                                   */
 /*********************************************************************************************************************/
 
 *, *::before, *::after  { box-sizing: border-box;                                                   }
-html                    { color-scheme: light dark;                                                 }
 body                    { margin: 0; color: var(--color-text); background: var(--color-background)  ;
                           font-family: "Roboto", Arial, sans-serif; -webkit-text-size-adjust: 100%  ;
                           font-size: 14px; line-height: 1.55; letter-spacing: 0.01rem;              }
@@ -47,13 +31,16 @@ a:focus-visible         { outline: 2px solid currentColor; outline-offset: 5px; 
 /*                                                                                                                   */
 /*********************************************************************************************************************/
 
-.page                   { max-width: 700px; margin: 0 auto; padding: 96px 24px 110px;               }
-.header-name            { display: flex; justify-content: space-between; align-items: flex-start    ;
-                          gap: 28px; margin-bottom: 45px;                                           }
-.header-details         { margin-top: 5px; font-size: 12px; text-align: right; white-space: nowrap; }
-.language-switch        { display: block; font-size: 16px; text-decoration: underline               ;
-                         text-underline-offset: 2px;                                                }
-.language-switch:hover  { text-decoration-thickness: 2px;                                           }
+.page             { max-width: 700px; margin: 0 auto; padding: 96px 24px 110px;               }
+.header-name      { display: flex; justify-content: space-between; align-items: flex-start    ;
+                    gap: 28px; margin-bottom: 45px;                                           }
+.header-details   { margin-top: 5px; font-size: 12px; text-align: right; white-space: nowrap; }
+.header-switches  { display: flex; justify-content: flex-end; align-items: baseline           ;
+                    gap: 16px;                                                                }
+.language-switch, .theme-switch
+                  { font-size: 16px; text-decoration: underline; text-underline-offset: 2px;  }
+.language-switch:hover, .theme-switch:hover
+                  { text-decoration-thickness: 2px;                                           }
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
@@ -71,8 +58,9 @@ a:focus-visible         { outline: 2px solid currentColor; outline-offset: 5px; 
 /*                                                                                                                   */
 /*********************************************************************************************************************/
 
-@media (max-width: 620px)                                                     {
-.page           { padding: 52px 24px 80px;                                    }
-.header-name    { display: block; margin-bottom: 38px;                        }
-h1              { font-size: 34px; letter-spacing: -0.5px;                    }
-.header-details { margin-top: 16px; text-align: left; white-space: normal;  } }
+@media (max-width: 620px)                                                       {
+.page             { padding: 52px 24px 80px;                                    }
+.header-name      { display: block; margin-bottom: 38px;                        }
+h1                { font-size: 34px; letter-spacing: -0.5px;                    }
+.header-details   { margin-top: 16px; text-align: left; white-space: normal;    }
+.header-switches  { justify-content: flex-start;                              } }

@@ -32,9 +32,12 @@ $page_stylesheet = 'cv';
           <span><?=__('cv_location')?></span>
           <span><?=__('cv_age')?></span>
           <span><?=__('cv_in_tech')?></span>
-          <a class="language-switch" href="?lang=<?=$lang_other?>">
-            <?=__('site_language')?>
-          </a>
+          <div class="header-switches">
+            <a class="language-switch" href="?lang=<?=$lang_other?>">
+              <?=__('site_language')?>
+            </a>
+            <?php include_once __DIR__.'/inc/color_theme.inc.php'; ?>
+          </div>
         </div>
       </header>
 

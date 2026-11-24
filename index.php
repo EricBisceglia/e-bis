@@ -12,6 +12,7 @@ $page_stylesheet = 'homepage';
 
 
 
+
 /*********************************************************************************************************************/
 /*                                                                                                                   */
 /*                                                     FRONT END                                                     */
@@ -23,10 +24,11 @@ $page_stylesheet = 'homepage';
 
       <header class="header-name">
         <h1><?=__('site_name')?></h1>
-        <div class="header-details">
+        <div class="header-switches">
           <a class="language-switch" href="?lang=<?=$lang_other?>">
             <?=__('site_language')?>
           </a>
+          <?php include_once __DIR__.'/inc/color_theme.inc.php'; ?>
         </div>
       </header>
 

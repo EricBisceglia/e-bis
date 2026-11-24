@@ -9,9 +9,14 @@ ___('site_name',  'EN', "Éric Bisceglia");
 ___('site_name',  'FR', "Éric Bisceglia");
 
 // Language
-___('site_language',  'EN', "Version française");
-___('site_language',  'FR', "English version");
+___('site_language', 'EN', "Français");
+___('site_language', 'FR', "English");
 
+// Appearance
+___('site_theme_light', 'EN', "Light");
+___('site_theme_light', 'FR', "Clair");
+___('site_theme_dark',  'EN', "Dark");
+___('site_theme_dark',  'FR', "Sombre");
 
 
 
