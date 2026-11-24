@@ -1,5 +1,8 @@
 Options -MultiViews
 RewriteEngine On
 
-# CV/portfolio pages
-RewriteRule ^tech$ tech.php [END]
+# Remove the .php extension from page names
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+)$ $1.php [END]

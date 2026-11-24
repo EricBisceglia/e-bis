@@ -24,7 +24,7 @@ $page_stylesheet = 'cv';
 
       <header class="header-name">
         <div>
-          <h1><?=__('site_name')?></h1>
+          <h1><a href="./"><?=__('site_name')?></a></h1>
           <p class="header-subtitle"><?=__('home_tech')?></p>
         </div>
 

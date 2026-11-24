@@ -1,5 +1,17 @@
 <?php /***************************************************************************************************************/
 /*                                                                                                                   */
+/*                                                       SETUP                                                       */
+/*                                                                                                                   */
+/*********************************************************************************************************************/
+
+// Default the path to the website's root if none is provided
+$path = $path ?? './';
+
+
+
+
+/*********************************************************************************************************************/
+/*                                                                                                                   */
 /*                                                       HEADER                                                      */
 /*                                                                                                                   */
 /******************************************************************************************************************/ ?>
@@ -11,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?=__('site_name')?></title>
     <meta name="description" content="<?=__('site_name')?>">
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon.ico">
-    <link rel="stylesheet" href="./css/ebis.css">
-    <link rel="stylesheet" href="./css/<?=$page_stylesheet?>.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?=$path?>favicon.ico">
+    <link rel="stylesheet" href="<?=$path?>css/ebis.css">
+    <link rel="stylesheet" href="<?=$path?>css/<?=$page_stylesheet?>.css">
   </head>
