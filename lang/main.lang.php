@@ -1,4 +1,4 @@
-<?php /***************************************************************************************************************/
+<?php if(realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) { http_response_code(403); exit; } /***************/
 /*                                                                                                                   */
 /*                                                COMMON TRANSLATIONS                                                */
 /*                                                                                                                   */
@@ -29,7 +29,6 @@ ___('home_security', 'FR', "Conseil en cybersécurité");
 ___('home_games',    'EN', "Game design");
 ___('home_games',    'FR', "Game design");
 
-
 // Summary
 ___('home_summary', 'EN', <<<EOT
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
@@ -39,7 +38,6 @@ ___('home_summary', 'FR', <<<EOT
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
 EOT
 );
-
 
 // Contact
 ___('home_contact',  'EN', "Contact / LinkedIn");
@@ -73,7 +71,6 @@ ___('cv_games',     'EN', "Game design");
 ___('cv_games',     'FR', "Game design");
 ___('cv_contact',   'EN', "Contact");
 ___('cv_contact',   'FR', "Contact");
-
 
 // Section titles
 ___('cv_summary',   'EN', "Career summary");

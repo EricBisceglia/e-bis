@@ -1,1 +1,1 @@
-<?php exit(header("Location: ..")); ?>
+<?php exit(header('Location: ..', true, 302)); ?>

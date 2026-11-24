@@ -43,6 +43,40 @@
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
+/*                                                    ENTRY EDITOR                                                   */
+/*                                                                                                                   */
+/*********************************************************************************************************************/
+
+.entry-editor             { display: grid; gap: 28px;                                           }
+.entry-settings           { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr))     ;
+                            gap: 24px;                                                          }
+.entry-dates              { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr))     ;
+                            gap: 24px; align-items: end;                                        }
+.entry-translations       { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr))     ;
+                            gap: 32px;                                                          }
+.entry-editor fieldset    { min-width: 0; margin: 0; padding: 0; border: 0;                     }
+.entry-editor legend      { margin-bottom: 20px; padding: 0; font-size: 20px                    ;
+                            font-family: "Open Sans", Arial, sans-serif; font-weight: 700;      }
+.admin-field              { display: grid; gap: 8px; min-width: 0;                              }
+.entry-translations .admin-field + .admin-field
+                          { margin-top: 20px;                                                   }
+.admin-field input, .admin-field select, .admin-field textarea
+                          { width: 100%; min-width: 0; padding: 10px 12px; font: inherit        ;
+                            color: var(--color-text); background: var(--color-background)       ;
+                            border: 1px solid var(--color-border); border-radius: 0;            }
+.admin-field textarea     { resize: vertical;                                                   }
+.admin-checkbox           { display: flex; align-items: center; gap: 8px; min-height: 46px;     }
+.admin-checkbox input     { margin: 0;                                                          }
+.admin-help               { font-size: 13px;                                                    }
+.admin-section-heading    { display: flex; justify-content: space-between; align-items: center  ;
+                            flex-wrap: wrap; gap: 12px; margin-bottom: 18px;                    }
+.admin-section-heading h2 { margin-bottom: 0;                                                   }
+.admin-section-heading a  { text-decoration: underline; text-underline-offset: 3px;             }
+.admin-section-heading a:hover
+                          { text-decoration-thickness: 2px;                                     }
+
+/*********************************************************************************************************************/
+/*                                                                                                                   */
 /*                                                      MOBILE                                                       */
 /*                                                                                                                   */
 /*********************************************************************************************************************/
@@ -50,4 +84,7 @@
 @media (max-width: 620px)                                     {
 .admin .page      { padding-top: 32px;                        }
 .admin h1         { font-size: 28px;                          }
-.admin-profiles   { grid-template-columns: 1fr; gap: 14px;  } }
+.admin-profiles   { grid-template-columns: 1fr; gap: 14px;    }
+.entry-settings,
+.entry-dates,
+.entry-translations { grid-template-columns: 1fr; } }
