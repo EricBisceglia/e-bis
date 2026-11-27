@@ -30,7 +30,7 @@ ___('admin_profiles_description', 'FR', "Présentations & compétences pour chaq
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
-/*                                                    ENTRY EDITOR                                                   */
+/*                                                      ENTRIES                                                      */
 /*                                                                                                                   */
 /*********************************************************************************************************************/
 
@@ -59,6 +59,12 @@ ___('admin_language_en',     'EN', "English");
 ___('admin_language_en',     'FR', "Anglais");
 ___('admin_language_fr',     'EN', "French");
 ___('admin_language_fr',     'FR', "Français");
+
+// Entry list
+___('admin_entry_dates',     'EN', "Dates");
+___('admin_entry_dates',     'FR', "Dates");
+___('admin_entry_languages', 'EN', "Languages");
+___('admin_entry_languages', 'FR', "Langues");
 
 // Entry actions
 ___('admin_entry_add',    'EN', "Add entry");

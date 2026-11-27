@@ -21,5 +21,51 @@
         },
         "id": "5c815777a2ee3a8e1222ff64df0ffb37",
         "created": "2026-11-27T15:03:57+00:00"
+    },
+    {
+        "profile": "tech",
+        "status": "published",
+        "start": "2020-11",
+        "end": "",
+        "ongoing": true,
+        "en": {
+            "title": "Freelance",
+            "role": "Tech consulting",
+            "summary": "Strategy - ITSM - Cybersecurity",
+            "body": "Looking to self-isolate during the worst of the COVID-19 pandemic, I returned to freelancing. As a technical consultant, I oversee ITSM projects and cybersecurity audits, ensuring the proper implementation of all processes necessary to guarantee stability and security in their future day to day production operations.",
+            "bullets": "Tasked with finding my own customers and negotiating my own sales\nBuilding of long term relationships of mutual trust in order to ensure recurring work\nExplanation of complex technical concepts in simple terms to non-technical actors\nRepresenting my customers in technical workshops and negotiations with third parties\nIntroduction of processes into disorganized projects and technical teams\nAssistance in auditing and recruiting new key figures for the customers' projects\nDelivery of consulting reports, including roadmaps, and staffing & budgetting requirements"
+        },
+        "fr": {
+            "title": "",
+            "role": "",
+            "summary": "",
+            "body": "",
+            "bullets": ""
+        },
+        "id": "96ffc334fd0c9d5c217f0afaf81207d8",
+        "created": "2026-11-27T15:38:41+00:00"
+    },
+    {
+        "profile": "tech",
+        "status": "published",
+        "start": "2019-01",
+        "end": "2020-10",
+        "ongoing": false,
+        "en": {
+            "title": "Wynd",
+            "role": "Head of support & maintenance",
+            "summary": "Outsourcing - Product management",
+            "body": "Having raised 72m€ in series C funding, Wynd were looking to stabilize their projects by assembling a \"Run\" team. I was hired as the right hand of the head of run, in charge of the long term maintenance (OEM + TPM) of existing projects, tasked with ensuring the stability of production environments and establishing positive relationships with customers in order to upsell new features.",
+            "bullets": "Created the Run team, comprised of IT, support, maintenance, and systems administration\nAssembled a team dedicated to application maintenance within the Run team\nEstablished strong relationships with the Run teams of customers and third parties\nImplemented ITILv4 and change management in order to increase production stability\nWorked towards ISO27k normalization in order to reinforce security and reassure customers\nFilled out complex security forms required by institutional customers in the finance sector\nHandled multiple security audits and implemented improvements based on their feedback\nOutsourced a developer taskforce in order to stabilize and modernize legacy projects\nOutsourced application maintenance in order to have a flexible and scalable output\nHandled legal and financial negotiations for these outsourcing deals\nSet up KPIs and indicators in order to control the budgetting of this outsourced TPM\nRenegotiated and improved most existing production contracts and legal deals with customers\nTook part in the legal negotiations of all new projects to ensure they were mutually beneficial"
+        },
+        "fr": {
+            "title": "Wynd",
+            "role": "Responsable TMA",
+            "summary": "Externalisation - Gestion de produit",
+            "body": "Ayant levé 72m€ en série C, Wynd cherchaient à stabiliser leurs projets en assemblant une équipe \"Run\". J'y ai été recruté en tant Responsable TMA, chargé d'encadrer la maintenance des projets finis, de garantir la stabilité des environnements de production, et d'établir des relations positives avec les clients sur le long terme dans le but de générer de l'upsell.",
+            "bullets": "Création de l'équipe Run, composée d'IT, support, maintenance, et administration système\nAssemblage d'une équipe TMA au sein de l'équipe Run dédiée à la maintenance applicative\nMise en place de relations avec les équipes Run des clients et des tiers\nImplémentation d'ITILv4 et de gestion du changement afin de garantir une production stable\nQuête d'une mise aux normes ISO27k afin de renforcer la sécurité et rassurer les clients\nRemplissage de formulaires de sécurité complexes pour des clients de milieux exigeants\nGestion de multiples audits de sécurité et implémentation d'améliorations suite à ces audits\nExternalisation d'une taskforce de développeurs dans le but de stabiliser les projets legacy\nExternalisation d'une TMA dans le but d'avoir une livraison de correctifs flexible et scalable\nResponsabilité de la négociation finacière et légale de ces externalisations\nMise en place de KPIs et d'indicateurs pour contrôler le budget de la TMA externalisée\nRenégociation et amélioration de la majorité des contrats de production avec les clients\nNégociation des contrats des nouveaux & futurs projets pour garantir qu'ils soient conformes"
+        },
+        "id": "c9e0461269accdf5946b9e05cd2bc0fd",
+        "created": "2026-11-27T15:40:05+00:00"
     }
 ]

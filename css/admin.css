@@ -43,6 +43,23 @@
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
+/*                                                     ENTRY LIST                                                    */
+/*                                                                                                                   */
+/*********************************************************************************************************************/
+
+.admin-entry-table    { width: 100%; border-collapse: collapse;                           }
+.admin-entry-table th, .admin-entry-table td
+                      { padding: 14px 24px 14px 0; text-align: left; vertical-align: top  ;
+                           border-bottom: 1px solid var(--color-border);                  }
+.admin-entry-table th { font-size: 13px; font-family: "Open Sans", Arial, sans-serif      ;
+                           font-weight: 700;                                              }
+.admin-entry-table td { overflow-wrap: anywhere;                                          }
+.admin-entry-table th:last-child, .admin-entry-table td:last-child
+                      { padding-right: 0;                                                 }
+.admin-entry-role     { display: block; margin-top: 4px; font-size: 13px;                 }
+
+/*********************************************************************************************************************/
+/*                                                                                                                   */
 /*                                                    ENTRY EDITOR                                                   */
 /*                                                                                                                   */
 /*********************************************************************************************************************/
@@ -90,10 +107,21 @@
 /*                                                                                                                   */
 /*********************************************************************************************************************/
 
-@media (max-width: 620px)                                         {
-.admin .page          { padding-top: 32px;                        }
-.admin h1             { font-size: 28px;                          }
-.admin-profiles       { grid-template-columns: 1fr; gap: 14px;    }
+@media (max-width: 620px)                                                                   {
+.admin .page              { padding-top: 32px;                                              }
+.admin h1                 { font-size: 28px;                                                }
+.admin-profiles           { grid-template-columns: 1fr; gap: 14px;                          }
 .entry-settings, .entry-dates, .entry-translations
-                      { grid-template-columns: 1fr;               }
-.admin-entry-list li  { grid-template-columns: 1fr; gap: 4px;   } }
+                          { grid-template-columns: 1fr;                                     }
+.admin-entry-list li      { grid-template-columns: 1fr; gap: 4px;                           }
+.admin-entry-table thead  { display: none;                                                  }
+.admin-entry-table, .admin-entry-table tbody  { display: block;                             }
+.admin-entry-table tr     { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) ;
+                            gap: 14px 24px; padding: 18px 0;
+                            border-bottom: 1px solid var(--color-border);                   }
+.admin-entry-table td     { display: block; padding: 0; border: 0;                          }
+.admin-entry-table td:first-child
+                          { grid-column: 1 / -1;                                            }
+.admin-entry-table td::before
+                          { content: attr(data-label); display: block                       ;
+                            margin-bottom: 4px; font-size: 13px;                          } }

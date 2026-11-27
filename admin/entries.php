@@ -188,9 +188,9 @@ if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST')
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Fetch entries
+// Prepare the entry list
 
-// Prepare entries for display
+// Fetch entries
 $entries = array();
 try
 {
@@ -204,6 +204,51 @@ catch(Exception $error)
 
   if(!$entry_error)
     $entry_error = 'admin_entry_error_storage';
+}
+
+// Initialize entries
+$entry_rows = array();
+
+// Process each saved entry for display
+foreach(array_reverse($entries) as $saved_entry)
+{
+  // Prefer the current interface language when available
+  $display_language = $lang_lower;
+
+  // Fallback to the other language if needed
+  if($saved_entry[$display_language]['title'] === '')
+    $display_language = ($display_language === 'en') ? 'fr' : 'en';
+
+  // Prepare the entry dates for display
+  $entry_dates = array();
+
+  // Add the start date if available
+  if($saved_entry['start'] !== '')
+    $entry_dates[] = htmlspecialchars($saved_entry['start'], ENT_QUOTES, 'UTF-8');
+
+  // Add the end date, or indicate if still ongoing
+  if($saved_entry['ongoing'])
+    $entry_dates[] = __('admin_entry_ongoing');
+  else if($saved_entry['end'] !== '')
+    $entry_dates[] = htmlspecialchars($saved_entry['end'], ENT_QUOTES, 'UTF-8');
+
+  // Prepare the list of languages that have content for this entry
+  $entry_languages = array();
+  foreach(array('en', 'fr') as $available_language)
+  {
+    if($saved_entry[$available_language]['title'] !== '')
+      $entry_languages[] = __('admin_language_'.$available_language);
+  }
+
+  // Prepare the row for HTML output
+  $entry_rows[] = array(
+    'title'     => htmlspecialchars($saved_entry[$display_language]['title'], ENT_QUOTES, 'UTF-8'),
+    'role'      => htmlspecialchars($saved_entry[$display_language]['role'], ENT_QUOTES, 'UTF-8'),
+    'dates'     => implode(' — ', $entry_dates) ?: '—',
+    'profile'   => __('home_'.$saved_entry['profile']),
+    'status'    => __('admin_entry_'.$saved_entry['status']),
+    'languages' => implode(' / ', $entry_languages),
+  );
 }
 
 
@@ -322,29 +367,56 @@ catch(Exception $error)
           </div>
 
           <?php if(empty($entries)): ?>
-          <p class="admin-empty">
-            <?=__('admin_entries_empty')?>
-          </p>
-          <?php else: ?>
-          <ul class="admin-entry-list">
-            <?php foreach(array_reverse($entries) as $saved_entry): ?>
-            <li>
-              <span>
-                <?=htmlspecialchars(
-                  $saved_entry['en']['title'] !== ''
-                  ? $saved_entry['en']['title']
-                  : $saved_entry['fr']['title'],
-                  ENT_QUOTES,
-                  'UTF-8'
-                )?>
-              </span>
+            <p class="admin-empty">
+              <?=__('admin_entries_empty')?>
+            </p>
+            <?php else: ?>
 
-              <span><?=__('home_'.$saved_entry['profile'])?></span>
-              <span><?=__('admin_entry_'.$saved_entry['status'])?></span>
-            </li>
-            <?php endforeach; ?>
-          </ul>
-          <?php endif; ?>
+            <table class="admin-entry-table">
+              <thead>
+                <tr>
+                  <th scope="col"><?=__('admin_entry_title')?></th>
+                  <th scope="col"><?=__('admin_entry_dates')?></th>
+                  <th scope="col"><?=__('admin_entry_profile')?></th>
+                  <th scope="col"><?=__('admin_entry_status')?></th>
+                  <th scope="col"><?=__('admin_entry_languages')?></th>
+                </tr>
+              </thead>
+
+              <tbody>
+              <?php foreach($entry_rows as $entry_row): ?>
+              <tr>
+                <td data-label="<?=__('admin_entry_title')?>">
+                  <div>
+                    <?=$entry_row['title']?>
+
+                    <?php if($entry_row['role'] !== ''): ?>
+                    <span class="admin-entry-role"><?=$entry_row['role']?></span>
+                    <?php endif; ?>
+                  </div>
+                </td>
+
+                <td data-label="<?=__('admin_entry_dates')?>">
+                  <?=$entry_row['dates']?>
+                </td>
+
+                <td data-label="<?=__('admin_entry_profile')?>">
+                  <?=$entry_row['profile']?>
+                </td>
+
+                <td data-label="<?=__('admin_entry_status')?>">
+                  <?=$entry_row['status']?>
+                </td>
+
+                <td data-label="<?=__('admin_entry_languages')?>">
+                  <?=$entry_row['languages']?>
+                </td>
+              </tr>
+              <?php endforeach; ?>
+            </tbody>
+            </table>
+
+            <?php endif; ?>
 
         </section>
 
