@@ -96,6 +96,14 @@ ___('admin_entry_down',         'FR', "Descendre");
 ___('admin_entry_error_order',  'EN', "The order has been changed. Reload the list before moving entries.");
 ___('admin_entry_error_order',  'FR', "L'ordre a été changé. Rechargez la liste avant de déplacer les projets.");
 
+// Entry filters
+___('admin_entries_all_profiles',  'EN', "All profiles");
+___('admin_entries_all_profiles',  'FR', "Tous les profils");
+___('admin_entries_filter',        'EN', "Filter");
+___('admin_entries_filter',        'FR', "Filtrer");
+___('admin_entries_empty_profile', 'EN', "No projects for this profile.");
+___('admin_entries_empty_profile', 'FR', "Aucun projet pour ce profil.");
+
 // Translated fields
 ___('admin_entry_title',     'EN', "Company / Project");
 ___('admin_entry_title',     'FR', "Entreprise / projet");

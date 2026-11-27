@@ -63,6 +63,9 @@
                                 border: 1px solid var(--color-border); cursor: pointer;           }
 .entry-order button:disabled  { opacity: 0.45; cursor: default;                                   }
 .admin-entry-table tbody tr   { scroll-margin-top: 24px;                                          }
+.entry-filters                { display: flex; align-items: flex-end; flex-wrap: wrap             ;
+                                gap: 12px; margin-bottom: 24px;                                   }
+.entry-filters .admin-field   { width: 280px; max-width: 100%;                                    }
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
@@ -98,7 +101,7 @@
 .admin-section-heading a:hover
                             { text-decoration-thickness: 2px;                                     }
 .admin-feedback             { margin-top: 24px;                                                   }
-.entry-editor button, .entry-delete button
+.entry-editor button, .entry-delete button, .entry-filters button
                             { padding: 10px 20px; font: inherit; color: var(--color-text)         ;
                               background: var(--color-background)                                 ;
                               border: 1px solid var(--color-border); cursor: pointer;             }

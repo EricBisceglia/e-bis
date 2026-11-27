@@ -27,6 +27,30 @@ $admin_page      = 'entries';
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Prepare the page & forms
 
+// Look for profile filters
+$entry_filter = $_GET['profile'] ?? '';
+
+// Validate profile filtering against allowed values
+if(!in_array($entry_filter, array('', 'tech', 'security', 'games'), true))
+  $entry_filter = '';
+
+// Prepare the query string for the current profile filter
+$entry_filter_query = ($entry_filter !== '')
+                    ? 'profile='.rawurlencode($entry_filter).'&'
+                    : '';
+
+// Prepare the URL for the entry list
+$entry_list_url = './entries';
+if($entry_filter !== '')
+  $entry_list_url .= '?profile='.rawurlencode($entry_filter);
+$entry_list_link = htmlspecialchars($entry_list_url, ENT_QUOTES, 'UTF-8');
+$entry_add_url = htmlspecialchars('./entries?'.$entry_filter_query.'add=1#entry-editor', ENT_QUOTES, 'UTF-8');
+
+// Prepare the empty-list message
+$entry_empty_text = ($entry_filter !== '')
+                  ? __('admin_entries_empty_profile')
+                  : __('admin_entries_empty');
+
 // Show the editor when adding or editing an entry
 $entry_add    = ($_GET['add'] ?? '') === '1';
 $entry_edit   = array_key_exists('edit', $_GET);
@@ -70,7 +94,7 @@ $entry_token = $_SESSION['entry_token'];
 
 // Prepare default form values
 $entry_values = array(
-  'profile' => 'tech',
+  'profile' => $entry_filter ?: 'tech',
   'status'  => 'draft',
   'start'   => '',
   'end'     => '',
@@ -185,7 +209,7 @@ if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && $entry_move && !$entry_error
       $_SESSION['entry_token'] = bin2hex(random_bytes(32));
 
       // Redirect back to the entry list
-      exit(header('Location: ./entries#entry-'.rawurlencode($move_id), true, 303));
+      exit(header('Location: '.$entry_list_url.'#entry-'.rawurlencode($move_id), true, 303));
     }
 
     // Handle errors during the move
@@ -235,7 +259,7 @@ if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && $entry_delete && !$entry_err
       $_SESSION['entry_token'] = bin2hex(random_bytes(32));
 
       // Return to the list
-      exit(header('Location: ./entries?deleted=1', true, 303));
+      exit(header('Location: ./entries?'.$entry_filter_query.'deleted=1', true, 303));
     }
 
     // Handle errors during deletion
@@ -346,7 +370,7 @@ if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && !$entry_delete && !$entry_mo
       $_SESSION['entry_token'] = bin2hex(random_bytes(32));
 
       // Redirect to the entries page
-      exit(header('Location: ./entries?saved=1', true, 303));
+      exit(header('Location: ./entries?'.$entry_filter_query.'saved=1', true, 303));
     }
   }
 
@@ -398,6 +422,10 @@ foreach($entry_order_ids as $profile => $identifiers)
 // Process each saved entry for display
 foreach(array_reverse($entries) as $saved_entry)
 {
+  // Skip entries outside the selected profile
+  if($entry_filter !== '' && $saved_entry['profile'] !== $entry_filter)
+    continue;
+
   // Prefer the current interface language when available
   $display_language = $lang_lower;
 
@@ -438,7 +466,7 @@ foreach(array_reverse($entries) as $saved_entry)
     'profile'       => __('home_'.$saved_entry['profile']),
     'status'        => __('admin_entry_'.$saved_entry['status']),
     'languages'     => implode(' / ', $entry_languages),
-    'edit_url'      => htmlspecialchars('./entries?edit='.rawurlencode($saved_entry['id']).'#entry-editor', ENT_QUOTES, 'UTF-8'),
+    'edit_url' => htmlspecialchars('./entries?'.$entry_filter_query.'edit='.rawurlencode($saved_entry['id']).'#entry-editor', ENT_QUOTES, 'UTF-8'),
     'id'            => htmlspecialchars($saved_entry['id'], ENT_QUOTES, 'UTF-8'),
     'order_version' => $entry_order_versions[$saved_entry['profile']],
     'can_up'        => $entry_position > 0,
@@ -454,9 +482,7 @@ foreach(array_reverse($entries) as $saved_entry)
 $entry_heading = $entry_edit ? __('admin_entry_edit') : __('admin_entry_add');
 
 // Determine the entry editor's submission URL
-$entry_action = './entries?'
-              .($entry_edit ? 'edit='.rawurlencode($entry_id) : 'add=1')
-              .'#entry-editor';
+$entry_action = './entries?'.$entry_filter_query.($entry_edit ? 'edit='.rawurlencode($entry_id) : 'add=1').'#entry-editor';
 
 // Escape the submission URL for HTML output
 $entry_action = htmlspecialchars($entry_action, ENT_QUOTES, 'UTF-8');
@@ -489,7 +515,7 @@ $entry_action = htmlspecialchars($entry_action, ENT_QUOTES, 'UTF-8');
         <section class="admin-section" id="entry-editor">
           <div class="admin-section-heading">
             <h2><?=$entry_heading?></h2>
-            <a href="./entries"><?=__('admin_entry_cancel')?></a>
+            <a href="<?=$entry_list_link?>"><?=__('admin_entry_cancel')?></a>
           </div>
 
           <form class="entry-editor" method="post" action="<?=$entry_action?>">
@@ -593,13 +619,39 @@ $entry_action = htmlspecialchars($entry_action, ENT_QUOTES, 'UTF-8');
             <h2><?=__('admin_entries')?></h2>
 
             <?php if(!$entry_open): ?>
-            <a href="?add=1#entry-editor"><?=__('admin_entry_add')?></a>
+            <a href="<?=$entry_add_url?>"><?=__('admin_entry_add')?></a>
             <?php endif; ?>
           </div>
 
-          <?php if(empty($entries)): ?>
+          <form class="entry-filters" method="get" action="./entries">
+            <div class="admin-field">
+              <label for="entry_filter_profile"><?=__('admin_entry_profile')?></label>
+
+              <select id="entry_filter_profile" name="profile">
+                <option value=""<?=$entry_filter === '' ? ' selected' : ''?>>
+                  <?=__('admin_entries_all_profiles')?>
+                </option>
+
+                <option value="tech"<?=$entry_filter === 'tech' ? ' selected' : ''?>>
+                  <?=__('home_tech')?>
+                </option>
+
+                <option value="security"<?=$entry_filter === 'security' ? ' selected' : ''?>>
+                  <?=__('home_security')?>
+                </option>
+
+                <option value="games"<?=$entry_filter === 'games' ? ' selected' : ''?>>
+                  <?=__('home_games')?>
+                </option>
+              </select>
+            </div>
+
+            <button type="submit"><?=__('admin_entries_filter')?></button>
+          </form>
+
+          <?php if(empty($entry_rows)): ?>
             <p class="admin-empty">
-              <?=__('admin_entries_empty')?>
+              <?=$entry_empty_text?>
             </p>
             <?php else: ?>
 
@@ -645,7 +697,7 @@ $entry_action = htmlspecialchars($entry_action, ENT_QUOTES, 'UTF-8');
                 </td>
 
                 <td data-label="<?=__('admin_entry_order')?>">
-                  <form class="entry-order" method="post" action="./entries">
+                  <form class="entry-order" method="post" action="<?=$entry_list_link?>">
                     <input type="hidden" name="entry_action" value="move">
                     <input type="hidden" name="entry_token" value="<?=$entry_token?>">
                     <input type="hidden" name="entry_move_id" value="<?=$entry_row['id']?>">
