@@ -41,7 +41,9 @@ function entries_get() : array
  * @return  void
  */
 
-function entries_add( array $entry ) : void
+function entries_save( array   $entry        ,
+                       string  $id      = '' ,
+                       string  $version = '' ) : void
 {
   // Open the lock file (to make sure no other process is editing the entries)
   $lock = @fopen(__DIR__.'/../data/entries.lock', 'c');
@@ -63,12 +65,45 @@ function entries_add( array $entry ) : void
     // Fetch the latest entries
     $entries = entries_get();
 
-    // Give the new entry a unique ID and timestamp
-    $entry['id']      = bin2hex(random_bytes(16));
-    $entry['created'] = gmdate('c');
+    // Add a new entry
+    if($id === '')
+    {
+      $entry['id']      = bin2hex(random_bytes(16));
+      $entry['created'] = gmdate('c');
+      $entries[]        = $entry;
+    }
 
-    // Add the new entry to the entry list
-    $entries[] = $entry;
+    // Update an existing entry
+    else
+    {
+      // Look for the entry
+      $entry_found = false;
+      foreach($entries as $index => $saved_entry)
+      {
+        // Skip entries that don't match the ID
+        if($saved_entry['id'] !== $id)
+          continue;
+
+        // Stop here if the entry has been modified since it was last fetched
+        $saved_version = hash('sha256', json_encode($saved_entry, JSON_THROW_ON_ERROR));
+        if(!hash_equals($saved_version, $version))
+          throw new DomainException("The entry has changed.");
+
+        // Preserve the entry's identity and creation date
+        $entry['id']      = $saved_entry['id'];
+        $entry['created'] = $saved_entry['created'];
+        $entry['updated'] = gmdate('c');
+
+        // Replace the saved entry with the updated one
+        $entries[$index] = array_replace($saved_entry, $entry);
+        $entry_found    = true;
+        break;
+      }
+
+      // Stop here if the entry wasn't found
+      if(!$entry_found)
+        throw new OutOfBoundsException("The entry no longer exists.");
+    }
 
     // Encode the complete updated list
     $content = json_encode($entries, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR)."\n";

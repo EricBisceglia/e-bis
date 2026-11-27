@@ -1,9 +1,9 @@
 [
     {
         "profile": "tech",
-        "status": "draft",
-        "start": "2020",
-        "end": "2025-01",
+        "status": "published",
+        "start": "2010",
+        "end": "2012",
         "ongoing": false,
         "en": {
             "title": "Test",
@@ -20,7 +20,8 @@
             "bullets": "Fait truc\nEt ensuite\nAutres trucs"
         },
         "id": "5c815777a2ee3a8e1222ff64df0ffb37",
-        "created": "2026-11-27T15:03:57+00:00"
+        "created": "2026-11-27T15:03:57+00:00",
+        "updated": "2026-11-27T17:51:53+00:00"
     },
     {
         "profile": "tech",

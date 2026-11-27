@@ -27,8 +27,16 @@ $admin_page      = 'entries';
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Prepare the page & forms
 
-// Show the editor when adding an entry
-$entry_add = ($_GET['add'] ?? '') === '1';
+// Show the editor when adding or editing an entry
+$entry_add  = ($_GET['add'] ?? '') === '1';
+$entry_edit = array_key_exists('edit', $_GET);
+$entry_id   = is_string($_GET['edit'] ?? null) ? $_GET['edit'] : '';
+$entry_open = $entry_add || $entry_edit;
+
+// Read the version submitted by the editor
+$entry_version = is_string($_POST['entry_version'] ?? null)
+               ? $_POST['entry_version']
+               : '';
 
 // Determine the fields used for each entry
 $entry_fields = array(
@@ -74,18 +82,80 @@ foreach(array('en', 'fr') as $entry_language)
     $entry_values[$entry_language][$field] = '';
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Fetch existing entries
+
 // Set up error messages
 $entry_error = '';
+
+// Fetch entries
+$entries = array();
+try
+{
+  $entries = entries_get();
+}
+
+// Handle issues when fetching entries
+catch(Exception $error)
+{
+  error_log($error->getMessage());
+
+  if(!$entry_error)
+    $entry_error = 'admin_entry_error_storage';
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Load the entry being edited
+
+if($entry_edit)
+{
+  // Look for the entry being edited in the existing entries
+  $entry_found = false;
+  if(!$entry_error && preg_match('/^[a-f0-9]{32}$/D', $entry_id))
+  {
+    foreach($entries as $saved_entry)
+    {
+      // Skip entries that don't match the requested ID
+      if($saved_entry['id'] !== $entry_id)
+        continue;
+
+      // Found the entry, no need to continue searching
+      $entry_found = true;
+
+      // Populate the entry editor
+      if(($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST')
+      {
+        $entry_values  = $saved_entry;
+        $entry_version = hash('sha256', json_encode($saved_entry, JSON_THROW_ON_ERROR));
+      }
+
+      // Stop searching after finding the entry
+      break;
+    }
+  }
+
+  // Never turn a missing edit target into a new entry
+  if(!$entry_error && !$entry_found)
+  {
+    $entry_error = 'admin_entry_error_missing';
+    http_response_code(404);
+  }
+
+  if($entry_error)
+    $entry_open = false;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Add/edit/delete entries
 
 // Handle submitted entries
-if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST')
+if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && !$entry_error)
 {
-  // Default to adding exclusively for now
-  $entry_add = true;
+  // Keep the entry editor open
+  $entry_open = true;
 
   // Add a new entry
   try
@@ -162,7 +232,7 @@ if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST')
     if(!$entry_error)
     {
       // Add the entry to JSON storage
-      entries_add($entry_values);
+      entries_save($entry_values, $entry_id, $entry_version);
 
       // Replace the form token after a successful save
       $_SESSION['entry_token'] = bin2hex(random_bytes(32));
@@ -178,6 +248,18 @@ if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST')
     $entry_error = 'admin_entry_error_invalid';
   }
 
+  // Handle an entry changed since the editor was opened
+  catch(DomainException $error)
+  {
+    $entry_error = 'admin_entry_error_changed';
+  }
+
+  // Handle an entry removed before saving
+  catch(OutOfBoundsException $error)
+  {
+    $entry_error = 'admin_entry_error_missing';
+  }
+
   // Handle any other unexpected issues
   catch(Exception $error)
   {
@@ -189,22 +271,6 @@ if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST')
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Prepare the entry list
-
-// Fetch entries
-$entries = array();
-try
-{
-  $entries = entries_get();
-}
-
-// Handle issues when fetching entries
-catch(Exception $error)
-{
-  error_log($error->getMessage());
-
-  if(!$entry_error)
-    $entry_error = 'admin_entry_error_storage';
-}
 
 // Initialize entries
 $entry_rows = array();
@@ -248,8 +314,24 @@ foreach(array_reverse($entries) as $saved_entry)
     'profile'   => __('home_'.$saved_entry['profile']),
     'status'    => __('admin_entry_'.$saved_entry['status']),
     'languages' => implode(' / ', $entry_languages),
+    'edit_url' => htmlspecialchars('./entries?edit='.rawurlencode($saved_entry['id']).'#entry-editor', ENT_QUOTES, 'UTF-8'),
   );
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Entry editor details
+
+// Determine the entry editor's header
+$entry_heading = $entry_edit ? __('admin_entry_edit') : __('admin_entry_add');
+
+// Determine the entry editor's submission URL
+$entry_action = './entries?'
+              .($entry_edit ? 'edit='.rawurlencode($entry_id) : 'add=1')
+              .'#entry-editor';
+
+// Escape the submission URL for HTML output
+$entry_action = htmlspecialchars($entry_action, ENT_QUOTES, 'UTF-8');
 
 
 
@@ -273,15 +355,16 @@ foreach(array_reverse($entries) as $saved_entry)
         <p class="admin-feedback"><?=__('admin_entry_saved')?></p>
         <?php endif; ?>
 
-        <?php if($entry_add): ?>
+        <?php if($entry_open): ?>
         <section class="admin-section" id="entry-editor">
           <div class="admin-section-heading">
-            <h2><?=__('admin_entry_add')?></h2>
+            <h2><?=$entry_heading?></h2>
             <a href="./entries"><?=__('admin_entry_cancel')?></a>
           </div>
 
-          <form class="entry-editor" method="post" action="./entries?add=1#entry-editor">
+          <form class="entry-editor" method="post" action="<?=$entry_action?>">
             <input type="hidden" name="entry_token" value="<?=$entry_token?>">
+            <input type="hidden" name="entry_version" value="<?=htmlspecialchars($entry_version, ENT_QUOTES, 'UTF-8')?>">
 
             <div class="entry-settings">
               <div class="admin-field">
@@ -361,7 +444,7 @@ foreach(array_reverse($entries) as $saved_entry)
           <div class="admin-section-heading">
             <h2><?=__('admin_entries')?></h2>
 
-            <?php if(!$entry_add): ?>
+            <?php if(!$entry_open): ?>
             <a href="?add=1#entry-editor"><?=__('admin_entry_add')?></a>
             <?php endif; ?>
           </div>
@@ -388,7 +471,7 @@ foreach(array_reverse($entries) as $saved_entry)
               <tr>
                 <td data-label="<?=__('admin_entry_title')?>">
                   <div>
-                    <?=$entry_row['title']?>
+                    <a href="<?=$entry_row['edit_url']?>"><?=$entry_row['title']?></a>
 
                     <?php if($entry_row['role'] !== ''): ?>
                     <span class="admin-entry-role"><?=$entry_row['role']?></span>
