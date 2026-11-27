@@ -86,6 +86,16 @@ ___('admin_entry_delete_confirm',       'FR', "Confirmer la suppression");
 ___('admin_entry_deleted',              'EN', "Entry deleted.");
 ___('admin_entry_deleted',              'FR', "Projet supprimé.");
 
+// Entry ordering
+___('admin_entry_order',        'EN', "Order");
+___('admin_entry_order',        'FR', "Ordre");
+___('admin_entry_up',           'EN', "Up");
+___('admin_entry_up',           'FR', "Monter");
+___('admin_entry_down',         'EN', "Down");
+___('admin_entry_down',         'FR', "Descendre");
+___('admin_entry_error_order',  'EN', "The order has been changed. Reload the list before moving entries.");
+___('admin_entry_error_order',  'FR', "L'ordre a été changé. Rechargez la liste avant de déplacer les projets.");
+
 // Translated fields
 ___('admin_entry_title',     'EN', "Company / Project");
 ___('admin_entry_title',     'FR', "Entreprise / projet");

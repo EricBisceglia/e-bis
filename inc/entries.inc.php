@@ -4,7 +4,7 @@
 /*                                                                                                                   */
 /*********************************************************************************************************************/
 
- /**
+/**
  * Fetches the saved entries.
  *
  * @return  array  The saved entries.
@@ -33,13 +33,14 @@ function entries_get() : array
 
 
 
- /**
+/**
  * Adds, updates, or deletes an entry in the JSON storage.
  *
  * @param   array   $entry    The entry to add.
  * @param   string  $id       The ID of the entry to update.
  * @param   string  $version  The version hash of the entry.
  * @param   bool    $delete   Whether to delete the entry.
+ * @param   string  $move     The direction to move the entry ('up' or 'down').
  *
  * @return  void
  */
@@ -47,10 +48,15 @@ function entries_get() : array
 function entries_save( array   $entry           ,
                        string  $id      = ''    ,
                        string  $version = ''    ,
-                       bool    $delete  = false ) : void
+                       bool    $delete  = false ,
+                       string  $move    = ''    ) : void
 {
-  // Stop here if trying to delete without an entry identifier
-  if($delete && $id === '')
+  // Stop here if the requested operation is invalid
+  if(!in_array($move, array('', 'up', 'down'), true) || ($delete && $move !== ''))
+    throw new InvalidArgumentException("Invalid entry operation.");
+
+  // Stop here if trying to move or delete without an entry identifier
+  if(($delete || $move !== '') && $id === '')
     throw new InvalidArgumentException("Missing entry identifier.");
 
   // Open the lock file (to make sure no other process is editing the entries)
@@ -73,8 +79,60 @@ function entries_save( array   $entry           ,
     // Fetch the latest entries
     $entries = entries_get();
 
+    // Move an entry within its profile
+    if($move !== '')
+    {
+      // Find the entry's current position
+      $source_index = null;
+
+      // Locate the index of the entry to move within the entries array
+      foreach($entries as $index => $saved_entry)
+      {
+        if($saved_entry['id'] === $id)
+        {
+          $source_index = $index;
+          break;
+        }
+      }
+
+      // Stop here if the entry no longer exists in the current list
+      if($source_index === null)
+        throw new OutOfBoundsException("The entry no longer exists.");
+
+      // Determine the profile of the entry to move
+      $profile = $entries[$source_index]['profile'];
+
+      // Stop here if the profile order has changed
+      if(!hash_equals(entries_order_version($entries, $profile), $version))
+        throw new DomainException("The profile order has changed.");
+
+      // Collect the indexes of all entries belonging to the same profile
+      $profile_indexes = array();
+
+      // Iterate through entries to find those that belong to the same profile
+      foreach($entries as $index => $saved_entry)
+      {
+        if($saved_entry['profile'] === $profile)
+          $profile_indexes[] = $index;
+      }
+
+      // Determine the current position of the entry within its profile's list
+      $position = array_search($source_index, $profile_indexes, true);
+      $target_position = $position + (($move === 'up') ? 1 : -1);
+
+      // Stop here if the target position is out of bounds
+      if(!isset($profile_indexes[$target_position]))
+        return;
+
+      // Swap the entry with the target entry within the profile's list
+      $target_index = $profile_indexes[$target_position];
+      $temporary_entry        = $entries[$source_index];
+      $entries[$source_index] = $entries[$target_index];
+      $entries[$target_index] = $temporary_entry;
+    }
+
     // Add a new entry
-    if($id === '')
+    else if($id === '')
     {
       $entry['id']      = bin2hex(random_bytes(16));
       $entry['created'] = gmdate('c');
@@ -157,7 +215,7 @@ function entries_save( array   $entry           ,
 
 
 
- /**
+/**
  * Reads a submitted text field.
  *
  * @param   mixed  $value The submitted value.
@@ -173,4 +231,31 @@ function entry_input( mixed $value ) : string
 
   // Format the text and return it
   return trim(str_replace(array("\r\n", "\r"), "\n", $value));
+}
+
+
+
+
+/**
+ * Returns a version hash of a profile's entry order.
+ *
+ * @param   array   $entries  The saved entries.
+ * @param   string  $profile  The profile to check.
+ *
+ * @return  string            The order's version hash.
+ */
+
+function entries_order_version( array   $entries ,
+                                string  $profile ) : string
+{
+  // Fetch the identifiers of the entries for the given profile
+  $identifiers = array();
+  foreach($entries as $entry)
+  {
+    if($entry['profile'] === $profile)
+      $identifiers[] = $entry['id'];
+  }
+
+  // Return a hash of the identifiers to represent the order version
+  return hash('sha256', json_encode($identifiers, JSON_THROW_ON_ERROR));
 }

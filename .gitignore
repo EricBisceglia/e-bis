@@ -1,0 +1,7 @@
+# Runtime data
+/data/*
+
+# Files needed for installation and directory protection
+!/data/.htaccess
+!/data/index.php
+!/data/entries.example.json

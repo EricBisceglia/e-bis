@@ -31,6 +31,7 @@ $admin_page      = 'entries';
 $entry_add    = ($_GET['add'] ?? '') === '1';
 $entry_edit   = array_key_exists('edit', $_GET);
 $entry_delete = ($_POST['entry_action'] ?? '') === 'delete';
+$entry_move   = ($_POST['entry_action'] ?? '') === 'move';
 $entry_id     = is_string($_GET['edit'] ?? null) ? $_GET['edit'] : '';
 $entry_open   = $entry_add || $entry_edit;
 
@@ -151,7 +152,62 @@ if($entry_edit)
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Add/edit/delete entries
+// Add/edit/move/delete entries
+
+// Move an entry
+if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && $entry_move && !$entry_error)
+{
+  // Fetch the submitted form values for the move
+  $submitted_token = $_POST['entry_token'] ?? '';
+  $move_id         = $_POST['entry_move_id'] ?? '';
+  $move_direction  = $_POST['entry_direction'] ?? '';
+  $move_version    = $_POST['entry_order_version'] ?? '';
+
+  // Validate the form token first
+  if(!is_string($submitted_token) || !hash_equals($entry_token, $submitted_token))
+    $entry_error = 'admin_entry_error_request';
+
+  // Validate the movement request
+  else if(!is_string($move_id) || !preg_match('/^[a-f0-9]{32}$/D', $move_id)
+       || !in_array($move_direction, array('up', 'down'), true)
+       || !is_string($move_version))
+    $entry_error = 'admin_entry_error_invalid';
+
+  // Only proceed if there are no errors
+  else
+  {
+    try
+    {
+      // Perform the move operation for the specified entry within its profile
+      entries_save(array(), $move_id, $move_version, move: $move_direction);
+
+      // Renew the form token after a successful move
+      $_SESSION['entry_token'] = bin2hex(random_bytes(32));
+
+      // Redirect back to the entry list
+      exit(header('Location: ./entries#entry-'.rawurlencode($move_id), true, 303));
+    }
+
+    // Handle errors during the move
+    catch(DomainException $error)
+    {
+      $entry_error = 'admin_entry_error_order';
+    }
+
+    // Handle the case where the entry to move is missing
+    catch(OutOfBoundsException $error)
+    {
+      $entry_error = 'admin_entry_error_missing';
+    }
+
+    // Handle any other unexpected errors
+    catch(Exception $error)
+    {
+      error_log($error->getMessage());
+      $entry_error = 'admin_entry_error_storage';
+    }
+  }
+}
 
 // Delete an entry
 if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && $entry_delete && !$entry_error)
@@ -204,7 +260,7 @@ if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && $entry_delete && !$entry_err
 }
 
 // Add or edit an entry
-if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && !$entry_delete && !$entry_error)
+if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && !$entry_delete && !$entry_move && !$entry_error)
 {
   // Keep the entry editor open
   $entry_open = true;
@@ -327,6 +383,18 @@ if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && !$entry_delete && !$entry_er
 // Initialize entries
 $entry_rows = array();
 
+// Prepare the order of entries for each profile
+$entry_order_ids      = array();
+$entry_order_versions = array();
+
+// Collect the entry IDs for each profile in reverse order
+foreach(array_reverse($entries) as $saved_entry)
+  $entry_order_ids[$saved_entry['profile']][] = $saved_entry['id'];
+
+// Determine the order versions for each profile
+foreach($entry_order_ids as $profile => $identifiers)
+  $entry_order_versions[$profile] = entries_order_version($entries, $profile);
+
 // Process each saved entry for display
 foreach(array_reverse($entries) as $saved_entry)
 {
@@ -358,15 +426,23 @@ foreach(array_reverse($entries) as $saved_entry)
       $entry_languages[] = __('admin_language_'.$available_language);
   }
 
+  // Determine which movements are available
+  $profile_order = $entry_order_ids[$saved_entry['profile']];
+  $entry_position = array_search($saved_entry['id'], $profile_order, true);
+
   // Prepare the row for HTML output
   $entry_rows[] = array(
-    'title'     => htmlspecialchars($saved_entry[$display_language]['title'], ENT_QUOTES, 'UTF-8'),
-    'role'      => htmlspecialchars($saved_entry[$display_language]['role'], ENT_QUOTES, 'UTF-8'),
-    'dates'     => implode(' — ', $entry_dates) ?: '—',
-    'profile'   => __('home_'.$saved_entry['profile']),
-    'status'    => __('admin_entry_'.$saved_entry['status']),
-    'languages' => implode(' / ', $entry_languages),
-    'edit_url' => htmlspecialchars('./entries?edit='.rawurlencode($saved_entry['id']).'#entry-editor', ENT_QUOTES, 'UTF-8'),
+    'title'         => htmlspecialchars($saved_entry[$display_language]['title'], ENT_QUOTES, 'UTF-8'),
+    'role'          => htmlspecialchars($saved_entry[$display_language]['role'], ENT_QUOTES, 'UTF-8'),
+    'dates'         => implode(' — ', $entry_dates) ?: '—',
+    'profile'       => __('home_'.$saved_entry['profile']),
+    'status'        => __('admin_entry_'.$saved_entry['status']),
+    'languages'     => implode(' / ', $entry_languages),
+    'edit_url'      => htmlspecialchars('./entries?edit='.rawurlencode($saved_entry['id']).'#entry-editor', ENT_QUOTES, 'UTF-8'),
+    'id'            => htmlspecialchars($saved_entry['id'], ENT_QUOTES, 'UTF-8'),
+    'order_version' => $entry_order_versions[$saved_entry['profile']],
+    'can_up'        => $entry_position > 0,
+    'can_down'      => $entry_position < count($profile_order) - 1,
   );
 }
 
@@ -535,12 +611,13 @@ $entry_action = htmlspecialchars($entry_action, ENT_QUOTES, 'UTF-8');
                   <th scope="col"><?=__('admin_entry_profile')?></th>
                   <th scope="col"><?=__('admin_entry_status')?></th>
                   <th scope="col"><?=__('admin_entry_languages')?></th>
+                  <th scope="col"><?=__('admin_entry_order')?></th>
                 </tr>
               </thead>
 
               <tbody>
               <?php foreach($entry_rows as $entry_row): ?>
-              <tr>
+              <tr id="entry-<?=$entry_row['id']?>">
                 <td data-label="<?=__('admin_entry_title')?>">
                   <div>
                     <a href="<?=$entry_row['edit_url']?>"><?=$entry_row['title']?></a>
@@ -566,6 +643,18 @@ $entry_action = htmlspecialchars($entry_action, ENT_QUOTES, 'UTF-8');
                 <td data-label="<?=__('admin_entry_languages')?>">
                   <?=$entry_row['languages']?>
                 </td>
+
+                <td data-label="<?=__('admin_entry_order')?>">
+                  <form class="entry-order" method="post" action="./entries">
+                    <input type="hidden" name="entry_action" value="move">
+                    <input type="hidden" name="entry_token" value="<?=$entry_token?>">
+                    <input type="hidden" name="entry_move_id" value="<?=$entry_row['id']?>">
+                    <input type="hidden" name="entry_order_version" value="<?=$entry_row['order_version']?>">
+                    <button type="submit" name="entry_direction" value="up" title="<?=__('admin_entry_up')?>" <?=$entry_row['can_up'] ? '' : 'disabled'?>>↑</button>
+                    <button type="submit" name="entry_direction" value="down" title="<?=__('admin_entry_down')?>" <?=$entry_row['can_down'] ? '' : 'disabled'?>>↓</button>
+                  </form>
+                </td>
+
               </tr>
               <?php endforeach; ?>
             </tbody>
