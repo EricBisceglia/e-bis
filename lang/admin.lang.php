@@ -77,3 +77,25 @@ ___('admin_entry_body',      'EN', "Description");
 ___('admin_entry_body',      'FR', "Description");
 ___('admin_entry_bullets',   'EN', "Bullet points");
 ___('admin_entry_bullets',   'FR', "Bullet points");
+
+// Saving entries
+___('admin_entry_save',  'EN', "Save");
+___('admin_entry_save',  'FR', "Enregistrer");
+___('admin_entry_saved', 'EN', "Entry added.");
+___('admin_entry_saved', 'FR', "Projet ajouté.");
+
+// Default values
+___('admin_entry_date_placeholder', 'EN', "YYYY or YYYY-MM");
+___('admin_entry_date_placeholder', 'FR', "YYYY ou YYYY-MM");
+
+// Validation errors
+___('admin_entry_error_invalid',  'EN', "Some fields contain invalid values.");
+___('admin_entry_error_invalid',  'FR', "Certains champs contiennent des valeurs invalides.");
+___('admin_entry_error_title',    'EN', "Enter a company or project name in at least one language.");
+___('admin_entry_error_title',    'FR', "Indiquez une entreprise ou un projet dans au moins une langue.");
+___('admin_entry_error_dates',    'EN', "The end date cannot be before the start date.");
+___('admin_entry_error_dates',    'FR', "La date de fin ne peut pas précéder la date de début.");
+___('admin_entry_error_request',  'EN', "The form expired. Please try saving again.");
+___('admin_entry_error_request',  'FR', "Le formulaire a expiré. Veuillez réessayer.");
+___('admin_entry_error_storage',  'EN', "The entries could not be read or saved.");
+___('admin_entry_error_storage',  'FR', "Impossible de lire ou d'enregistrer les projets.");

@@ -1,0 +1,25 @@
+[
+    {
+        "profile": "tech",
+        "status": "draft",
+        "start": "2020",
+        "end": "2025-01",
+        "ongoing": false,
+        "en": {
+            "title": "Test",
+            "role": "Role",
+            "summary": "Summary",
+            "body": "Description",
+            "bullets": "Did things\nAnd then\nMore stuff"
+        },
+        "fr": {
+            "title": "Teste",
+            "role": "Rôle",
+            "summary": "Résumé",
+            "body": "Déscription",
+            "bullets": "Fait truc\nEt ensuite\nAutres trucs"
+        },
+        "id": "5c815777a2ee3a8e1222ff64df0ffb37",
+        "created": "2026-11-27T15:03:57+00:00"
+    }
+]

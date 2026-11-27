@@ -74,6 +74,15 @@
 .admin-section-heading a  { text-decoration: underline; text-underline-offset: 3px;             }
 .admin-section-heading a:hover
                           { text-decoration-thickness: 2px;                                     }
+.admin-feedback           { margin-top: 24px;                                                   }
+.admin-entry-list         { margin: 0; padding: 0; list-style: none;                            }
+.admin-entry-list li      { display: grid; grid-template-columns: minmax(0, 1fr) auto auto      ;
+                             gap: 12px 24px; padding: 16px 0                                    ;
+                             border-bottom: 1px solid var(--color-border);                      }
+.admin-entry-list li span { min-width: 0; overflow-wrap: anywhere;                              }
+.entry-editor button      { padding: 10px 20px; font: inherit; color: var(--color-text)         ;
+                             background: var(--color-background)                                ;
+                             border: 1px solid var(--color-border); cursor: pointer;            }
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
@@ -81,10 +90,10 @@
 /*                                                                                                                   */
 /*********************************************************************************************************************/
 
-@media (max-width: 620px)                                     {
-.admin .page      { padding-top: 32px;                        }
-.admin h1         { font-size: 28px;                          }
-.admin-profiles   { grid-template-columns: 1fr; gap: 14px;    }
-.entry-settings,
-.entry-dates,
-.entry-translations { grid-template-columns: 1fr; } }
+@media (max-width: 620px)                                         {
+.admin .page          { padding-top: 32px;                        }
+.admin h1             { font-size: 28px;                          }
+.admin-profiles       { grid-template-columns: 1fr; gap: 14px;    }
+.entry-settings, .entry-dates, .entry-translations
+                      { grid-template-columns: 1fr;               }
+.admin-entry-list li  { grid-template-columns: 1fr; gap: 4px;   } }
