@@ -67,16 +67,24 @@ ___('admin_entry_languages', 'EN', "Languages");
 ___('admin_entry_languages', 'FR', "Langues");
 
 // Entry actions
-___('admin_entry_add',            'EN', "Add entry");
-___('admin_entry_add',            'FR', "Ajouter un projet");
-___('admin_entry_cancel',         'EN', "Cancel");
-___('admin_entry_cancel',         'FR', "Annuler");
-___('admin_entry_edit',           'EN', "Edit entry");
-___('admin_entry_edit',           'FR', "Modifier le projet");
-___('admin_entry_error_missing',  'EN', "This entry no longer exists.");
-___('admin_entry_error_missing',  'FR', "Ce projet n'existe plus.");
-___('admin_entry_error_changed',  'EN', "This entry has changed. Reopen it before saving.");
-___('admin_entry_error_changed',  'FR', "Ce projet a été modifié. Rouvrez-le avant d'enregistrer.");
+___('admin_entry_add',                  'EN', "Add entry");
+___('admin_entry_add',                  'FR', "Ajouter un projet");
+___('admin_entry_cancel',               'EN', "Cancel");
+___('admin_entry_cancel',               'FR', "Annuler");
+___('admin_entry_edit',                 'EN', "Edit entry");
+___('admin_entry_edit',                 'FR', "Modifier le projet");
+___('admin_entry_error_missing',        'EN', "This entry no longer exists.");
+___('admin_entry_error_missing',        'FR', "Ce projet n'existe plus.");
+___('admin_entry_error_changed',        'EN', "This entry has changed. Reopen it before saving.");
+___('admin_entry_error_changed',        'FR', "Ce projet a été modifié. Rouvrez-le avant d'enregistrer.");
+___('admin_entry_delete',               'EN', "Delete entry");
+___('admin_entry_delete',               'FR', "Supprimer le projet");
+___('admin_entry_delete_confirmation',  'EN', "Permanently delete this entry? This cannot be undone.");
+___('admin_entry_delete_confirmation',  'FR', "Supprimer définitivement ce projet ? Cette action est irréversible.");
+___('admin_entry_delete_confirm',       'EN', "Confirm deletion");
+___('admin_entry_delete_confirm',       'FR', "Confirmer la suppression");
+___('admin_entry_deleted',              'EN', "Entry deleted.");
+___('admin_entry_deleted',              'FR', "Projet supprimé.");
 
 // Translated fields
 ___('admin_entry_title',     'EN', "Company / Project");

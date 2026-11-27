@@ -28,10 +28,11 @@ $admin_page      = 'entries';
 // Prepare the page & forms
 
 // Show the editor when adding or editing an entry
-$entry_add  = ($_GET['add'] ?? '') === '1';
-$entry_edit = array_key_exists('edit', $_GET);
-$entry_id   = is_string($_GET['edit'] ?? null) ? $_GET['edit'] : '';
-$entry_open = $entry_add || $entry_edit;
+$entry_add    = ($_GET['add'] ?? '') === '1';
+$entry_edit   = array_key_exists('edit', $_GET);
+$entry_delete = ($_POST['entry_action'] ?? '') === 'delete';
+$entry_id     = is_string($_GET['edit'] ?? null) ? $_GET['edit'] : '';
+$entry_open   = $entry_add || $entry_edit;
 
 // Read the version submitted by the editor
 $entry_version = is_string($_POST['entry_version'] ?? null)
@@ -124,12 +125,13 @@ if($entry_edit)
       // Found the entry, no need to continue searching
       $entry_found = true;
 
-      // Populate the entry editor
+      // Populate the entry editor (or display a deletion error)
+      if(($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || $entry_delete)
+        $entry_values = $saved_entry;
+
+      // Store the version hash for the entry being edited
       if(($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST')
-      {
-        $entry_values  = $saved_entry;
         $entry_version = hash('sha256', json_encode($saved_entry, JSON_THROW_ON_ERROR));
-      }
 
       // Stop searching after finding the entry
       break;
@@ -151,8 +153,58 @@ if($entry_edit)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Add/edit/delete entries
 
-// Handle submitted entries
-if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && !$entry_error)
+// Delete an entry
+if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && $entry_delete && !$entry_error)
+{
+  // Fetch the submitted form token for validation
+  $submitted_token = $_POST['entry_token'] ?? '';
+
+  // Must delete an existing entry
+  if(!$entry_edit)
+    $entry_error = 'admin_entry_error_invalid';
+
+  // Validate the form token
+  else if(!is_string($submitted_token) || !hash_equals($entry_token, $submitted_token))
+    $entry_error = 'admin_entry_error_request';
+
+  // Only proceed if there are no errors
+  else
+  {
+    try
+    {
+      // Delete the entry
+      entries_save(array(), $entry_id, $entry_version, delete: true);
+
+      // Renew the form token
+      $_SESSION['entry_token'] = bin2hex(random_bytes(32));
+
+      // Return to the list
+      exit(header('Location: ./entries?deleted=1', true, 303));
+    }
+
+    // Handle errors during deletion
+    catch(DomainException $error)
+    {
+      $entry_error = 'admin_entry_error_changed';
+    }
+
+    // Handle the case where the entry to delete is missing
+    catch(OutOfBoundsException $error)
+    {
+      $entry_error = 'admin_entry_error_missing';
+    }
+
+    // Handle any other unexpected errors
+    catch(Exception $error)
+    {
+      error_log($error->getMessage());
+      $entry_error = 'admin_entry_error_storage';
+    }
+  }
+}
+
+// Add or edit an entry
+if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && !$entry_delete && !$entry_error)
 {
   // Keep the entry editor open
   $entry_open = true;
@@ -353,6 +405,8 @@ $entry_action = htmlspecialchars($entry_action, ENT_QUOTES, 'UTF-8');
         <p class="admin-feedback"><?=__($entry_error)?></p>
         <?php elseif(($_GET['saved'] ?? '') === '1'): ?>
         <p class="admin-feedback"><?=__('admin_entry_saved')?></p>
+        <?php elseif(($_GET['deleted'] ?? '') === '1'): ?>
+        <p class="admin-feedback"><?=__('admin_entry_deleted')?></p>
         <?php endif; ?>
 
         <?php if($entry_open): ?>
@@ -437,6 +491,24 @@ $entry_action = htmlspecialchars($entry_action, ENT_QUOTES, 'UTF-8');
               <button type="submit"><?=__('admin_entry_save')?></button>
             </div>
           </form>
+
+          <?php if($entry_edit): ?>
+          <details class="entry-delete">
+            <summary><?=__('admin_entry_delete')?></summary>
+
+            <p><?=__('admin_entry_delete_confirmation')?></p>
+
+            <form method="post" action="<?=$entry_action?>">
+              <input type="hidden" name="entry_action" value="delete">
+              <input type="hidden" name="entry_token" value="<?=$entry_token?>">
+              <input type="hidden" name="entry_version"
+                    value="<?=htmlspecialchars($entry_version, ENT_QUOTES, 'UTF-8')?>">
+
+              <button type="submit"><?=__('admin_entry_delete_confirm')?></button>
+            </form>
+          </details>
+          <?php endif; ?>
+
         </section>
         <?php endif; ?>
 

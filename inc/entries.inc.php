@@ -34,17 +34,25 @@ function entries_get() : array
 
 
  /**
- * Adds an entry to the JSON storage.
+ * Adds, updates, or deletes an entry in the JSON storage.
  *
- * @param   array  $entry  The entry to add.
+ * @param   array   $entry    The entry to add.
+ * @param   string  $id       The ID of the entry to update.
+ * @param   string  $version  The version hash of the entry.
+ * @param   bool    $delete   Whether to delete the entry.
  *
  * @return  void
  */
 
-function entries_save( array   $entry        ,
-                       string  $id      = '' ,
-                       string  $version = '' ) : void
+function entries_save( array   $entry           ,
+                       string  $id      = ''    ,
+                       string  $version = ''    ,
+                       bool    $delete  = false ) : void
 {
+  // Stop here if trying to delete without an entry identifier
+  if($delete && $id === '')
+    throw new InvalidArgumentException("Missing entry identifier.");
+
   // Open the lock file (to make sure no other process is editing the entries)
   $lock = @fopen(__DIR__.'/../data/entries.lock', 'c');
 
@@ -88,6 +96,14 @@ function entries_save( array   $entry        ,
         $saved_version = hash('sha256', json_encode($saved_entry, JSON_THROW_ON_ERROR));
         if(!hash_equals($saved_version, $version))
           throw new DomainException("The entry has changed.");
+
+        // Delete the entry if requested
+        if($delete)
+        {
+          array_splice($entries, $index, 1);
+          $entry_found = true;
+          break;
+        }
 
         // Preserve the entry's identity and creation date
         $entry['id']      = $saved_entry['id'];
