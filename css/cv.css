@@ -19,7 +19,7 @@
 .cv-section, .cv-entry  { scroll-margin-top: 24px;                                          }
 .cv .header-details     { display: flex; flex-direction: column; gap: 2px                   ;
                           font-size: 16px; text-align: right;                               }
-.cv-introduction        { margin-bottom: 30px; line-height: 1.75;                           }
+.cv-introduction        { margin-top: 30px; line-height: 1.75;                              }
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
@@ -27,14 +27,12 @@
 /*                                                                                                                   */
 /*********************************************************************************************************************/
 
-.career-summary                 { display: grid; column-gap: 24px                               ;
+.career-summary                 { display: grid; column-gap: 24px                                     ;
                                   grid-template-columns: max-content fit-content(50%) minmax(0, 1fr); }
-
-.summary-entry                  { display: grid; grid-column: 1 / -1                            ;
-                                  grid-template-columns: subgrid; padding: 5px 0;                 }
-
-.summary-entry span             { min-width: 0; overflow-wrap: anywhere;                          }
-.summary-entry span:first-child { font-variant-numeric: tabular-nums;                             }
+.summary-entry                  { display: grid; grid-column: 1 / -1                                  ;
+                                  grid-template-columns: subgrid; padding: 5px 0;                     }
+.summary-entry span             { min-width: 0; overflow-wrap: anywhere;                              }
+.summary-entry span:first-child { font-variant-numeric: tabular-nums;                                 }
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
@@ -54,13 +52,16 @@
 /*                                                                                                                   */
 /*********************************************************************************************************************/
 
-.cv-entry + .cv-entry { margin-top: 40px;                                       }
-.cv-entry h3          { margin: 0; font-family: "Open Sans", Arial, sans-serif  ;
-                        font-weight: 700; font-size: 1.5rem; line-height: 1.4;  }
-.entry-details        { margin-top: 6px; margin-bottom: 22px;                   }
-.cv-entry > p + p     { margin-top: 18px;                                       }
-.cv-entry ul          { margin: 18px 0 0; padding-left: 22px;                   }
-.cv-entry li          { margin: 4px 0;                                          }
+.cv-entry + .cv-entry { margin-top: 40px;                                               }
+.cv-entry h3          { margin: 0; font-family: "Open Sans", Arial, sans-serif          ;
+                        font-weight: 700; font-size: 1.5rem; line-height: 1.4;          }
+.entry-details        { margin-top: 6px; margin-bottom: 22px;                           }
+.cv-entry > p + p     { margin-top: 18px;                                               }
+.cv-entry ul          { margin: 18px 0 0; padding-left: 22px;                           }
+.cv-entry li          { margin: 4px 0;                                                  }
+.entry-images         { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) ;
+                        gap: 16px; margin-top: 24px;                                    }
+.entry-images img     { display: block; width: 100%; height: auto;                      }
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
@@ -80,4 +81,5 @@
 .summary-entry        { gap: 4px 14px; padding: 8px 0;                                  }
 .summary-entry span:last-child  { grid-column: 2;                                       }
 .skill-list           { grid-template-columns: 1fr; gap: 4px;                           }
-.skill-list dd        { margin-bottom: 12px;                                          } }
+.skill-list dd        { margin-bottom: 12px;                                            }
+.entry-images         { grid-template-columns: 1fr;                                   } }

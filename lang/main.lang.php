@@ -91,3 +91,9 @@ ___('cv_skills',    'EN', "Skills");
 ___('cv_skills',    'FR', "Compétences");
 ___('cv_career',    'EN', "Detailed career");
 ___('cv_career',    'FR', "Parcours détaillé");
+
+// Dynamic CV content
+___('cv_ongoing',       'EN', "Present");
+___('cv_ongoing',       'FR', "Aujourd'hui");
+___('cv_error_content', 'EN', "This section is temporarily unavailable.");
+___('cv_error_content', 'FR', "Cette section est temporairement indisponible.");

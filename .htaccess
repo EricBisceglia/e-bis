@@ -1,7 +1,11 @@
+# Enable URL rewriting
 Options -MultiViews
 RewriteEngine On
 
-# Remove the .php extension from page names
+# Handle CV pages
+RewriteRule ^(tech|cybersecurity|gamedesign)$ cv.php [END]
+
+# Remove the .php extension from other page names
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
