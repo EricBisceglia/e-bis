@@ -27,10 +27,42 @@ ___('admin_profiles_description', 'FR', "Présentations & compétences pour chaq
 
 
 
+/*********************************************************************************************************************/
+/*                                                                                                                   */
+/*                                                     PROFILES                                                      */
+/*                                                                                                                   */
+/*********************************************************************************************************************/
+
+// Profile editor
+___('admin_profile_introduction', 'EN', "Introduction");
+___('admin_profile_introduction', 'FR', "Présentation");
+___('admin_profile_skills',       'EN', "Skills");
+___('admin_profile_skills',       'FR', "Compétences");
+___('admin_profile_skills_help',  'EN', "One skill per line: Name | Description");
+___('admin_profile_skills_help',  'FR', "Une compétence par ligne : Nom | Description");
+___('admin_profile_save',         'EN', "Save");
+___('admin_profile_save',         'FR', "Enregistrer");
+
+// Saving profiles
+___('admin_profile_saved',          'EN', "Profile saved.");
+___('admin_profile_saved',          'FR', "Profil enregistré.");
+___('admin_profile_error_invalid',  'EN', "Some fields contain invalid values.");
+___('admin_profile_error_invalid',  'FR', "Certains champs contiennent des valeurs invalides.");
+___('admin_profile_error_request',  'EN', "The form expired. Please try saving again.");
+___('admin_profile_error_request',  'FR', "Le formulaire a expiré. Veuillez réessayer.");
+___('admin_profile_error_skills',   'EN', "Use Name | Description for each non-empty skill line.");
+___('admin_profile_error_skills',   'FR', "Utilisez Nom | Description pour chaque ligne de compétence non vide.");
+___('admin_profile_error_changed',  'EN', "This profile has changed. Reopen it before saving.");
+___('admin_profile_error_changed',  'FR', "Ce profil a été modifié. Rouvrez-le avant d'enregistrer.");
+___('admin_profile_error_storage',  'EN', "The profiles could not be read or saved.");
+___('admin_profile_error_storage',  'FR', "Impossible de lire ou d'enregistrer les profils.");
+
+
+
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
-/*                                                      ENTRIES                                                      */
+/*                                                      PROJECTS                                                     */
 /*                                                                                                                   */
 /*********************************************************************************************************************/
 

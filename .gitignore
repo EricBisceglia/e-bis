@@ -3,6 +3,7 @@
 !/data/.htaccess
 !/data/index.php
 !/data/entries.example.json
+!/data/profiles.example.json
 
 # Don't commit project images
 /images/projects/
