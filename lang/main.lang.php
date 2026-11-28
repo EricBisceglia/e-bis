@@ -20,6 +20,7 @@ ___('site_theme_dark',  'FR', "Sombre");
 
 
 
+
 /*********************************************************************************************************************/
 /*                                                                                                                   */
 /*                                                     HOMEPAGE                                                      */
@@ -48,6 +49,10 @@ EOT
 ___('home_contact',  'EN', "Contact / LinkedIn");
 ___('home_contact',  'FR', "Contact / LinkedIn");
 
+// Source code
+___('home_source',  'EN', "Source code");
+___('home_source',  'FR', "Code source");
+
 
 
 
@@ -74,8 +79,10 @@ ___('cv_security',  'EN', "Cybersecurity");
 ___('cv_security',  'FR', "Cybersécurité");
 ___('cv_games',     'EN', "Game design");
 ___('cv_games',     'FR', "Game design");
-___('cv_contact',   'EN', "Contact");
-___('cv_contact',   'FR', "Contact");
+___('cv_source',    'EN', "Source");
+___('cv_source',    'FR', "Source");
+___('cv_contact',   'EN', "Contact / LinkedIn");
+___('cv_contact',   'FR', "Contact / LinkedIn");
 
 // Section titles
 ___('cv_summary',   'EN', "Career summary");

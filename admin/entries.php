@@ -99,6 +99,7 @@ $entry_values = array(
   'start'   => '',
   'end'     => '',
   'ongoing' => false,
+  'images'  => array(),
 );
 
 // Prepare translated form values
@@ -173,6 +174,9 @@ if($entry_edit)
   if($entry_error)
     $entry_open = false;
 }
+
+// Prepare the image text for the editor
+$entry_images_text = implode("\n", $entry_values['images'] ?? array());
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -318,6 +322,26 @@ if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && !$entry_delete && !$entry_mo
         $entry_values[$entry_language][$field] = entry_input($translation[$field] ?? '');
     }
 
+    // Read and process the image list
+    $entry_images_text = entry_input($submitted['images'] ?? '');
+    $entry_values['images'] = array();
+
+    // Split the image list into individual filenames and format them
+    foreach(explode("\n", $entry_images_text) as $image)
+    {
+      $image = trim($image);
+      if($image !== '')
+        $entry_values['images'][] = $image;
+    }
+
+    // Validate that each image exists
+    $valid_images = true;
+    foreach($entry_values['images'] as $image)
+    {
+      if(!entry_image_exists($image))
+        $valid_images = false;
+    }
+
     // Ongoing entries should not have an end date
     if($entry_values['ongoing'])
       $entry_values['end'] = '';
@@ -351,6 +375,10 @@ if(($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && !$entry_delete && !$entry_mo
          || !in_array($entry_values['status'], array('draft', 'published'), true)
          || !$valid_dates)
       $entry_error = 'admin_entry_error_invalid';
+
+    // Stop here if an image path is invalid (or its file is missing)
+    else if(!$valid_images)
+      $entry_error = 'admin_entry_error_images';
 
     // Stop here if no title is provided in any language
     else if($entry_values['en']['title'] === '' && $entry_values['fr']['title'] === '')
@@ -476,6 +504,28 @@ foreach(array_reverse($entries) as $saved_entry)
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Prepare image previews
+
+// Generate the preview URLs for each valid image
+$entry_image_previews = array();
+foreach($entry_values['images'] ?? array() as $image)
+{
+  // Skip images that don't exist
+  if(!entry_image_exists($image))
+    continue;
+
+  // Generate the URL for the image preview
+  $image_url = '../images/projects/'.implode('/', array_map('rawurlencode', explode('/', $image)));
+
+  // Add the image preview to the list
+  $entry_image_previews[] = array(
+    'url'  => htmlspecialchars($image_url, ENT_QUOTES, 'UTF-8'),
+    'name' => htmlspecialchars($image, ENT_QUOTES, 'UTF-8'),
+  );
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Entry editor details
 
 // Determine the entry editor's header
@@ -588,6 +638,23 @@ $entry_action = htmlspecialchars($entry_action, ENT_QUOTES, 'UTF-8');
               </fieldset>
               <?php endforeach; ?>
             </div>
+
+            <div class="admin-field">
+              <label for="entry_images"><?=__('admin_entry_images')?></label>
+              <textarea id="entry_images" name="entry[images]" rows="5"><?=htmlspecialchars($entry_images_text, ENT_QUOTES, 'UTF-8')?></textarea>
+              <p class="admin-help"><?=__('admin_entry_images_help')?></p>
+            </div>
+
+            <?php if($entry_image_previews): ?>
+            <div class="entry-images">
+              <?php foreach($entry_image_previews as $image): ?>
+              <figure>
+                <img src="<?=$image['url']?>" alt="" loading="lazy">
+                <figcaption><?=$image['name']?></figcaption>
+              </figure>
+              <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
 
             <div>
               <button type="submit"><?=__('admin_entry_save')?></button>

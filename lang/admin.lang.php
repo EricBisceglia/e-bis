@@ -86,6 +86,14 @@ ___('admin_entry_delete_confirm',       'FR', "Confirmer la suppression");
 ___('admin_entry_deleted',              'EN', "Entry deleted.");
 ___('admin_entry_deleted',              'FR', "Projet supprimé.");
 
+// Entry images
+___('admin_entry_images',       'EN', "Images");
+___('admin_entry_images',       'FR', "Images");
+___('admin_entry_images_help',  'EN', "One filename per line, path relative to images/projects/.");
+___('admin_entry_images_help',  'FR', "Un nom de fichier par ligne, chemin relatif à images/projects/.");
+___('admin_entry_error_images', 'EN', "An image is missing or its path is invalid. Check the filenames in images/projects/.");
+___('admin_entry_error_images', 'FR', "Une image est introuvable ou son chemin est invalide. Vérifiez les noms de fichiers dans images/projects/.");
+
 // Entry ordering
 ___('admin_entry_order',        'EN', "Order");
 ___('admin_entry_order',        'FR', "Ordre");

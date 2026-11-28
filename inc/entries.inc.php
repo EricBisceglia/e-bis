@@ -259,3 +259,53 @@ function entries_order_version( array   $entries ,
   // Return a hash of the identifiers to represent the order version
   return hash('sha256', json_encode($identifiers, JSON_THROW_ON_ERROR));
 }
+
+
+
+
+/**
+ * Checks whether an image exists.
+ *
+ * @param   string  $image  The image's path.
+ *
+ * @return  bool            Whether the image exists.
+ */
+
+function entry_image_exists( string $image ) : bool
+{
+  // Stop here if the image path is invalid
+  if($image === ''
+  || str_starts_with($image, '/')
+  || str_contains($image, '\\')
+  || str_contains($image, ':')
+  || preg_match('/[\x00-\x1f\x7f]/', $image))
+    return false;
+
+  // Stop here if the image path is invalid
+  foreach(explode('/', $image) as $part)
+  {
+    if($part === '' || $part === '.' || $part === '..')
+      return false;
+  }
+
+  // Stop here if the image extension is not supported
+  $extension = strtolower(pathinfo($image, PATHINFO_EXTENSION));
+  if(!in_array($extension, array('jpg', 'jpeg', 'png', 'webp', 'gif', 'avif'), true))
+    return false;
+
+  // Stop here if the image file does not exist within the project images folder
+  $folder = realpath(__DIR__.'/../images/projects');
+  $file   = realpath(__DIR__.'/../images/projects/'.$image);
+  if($folder === false || $file === false || !is_file($file))
+    return false;
+
+  // Append the directory separator to the folder path
+  $folder .= DIRECTORY_SEPARATOR;
+
+  // Check if the file is within the project images folder (Windows localhost version)
+  if(DIRECTORY_SEPARATOR === '\\')
+    return strncasecmp($file, $folder, strlen($folder)) === 0;
+
+  // Check if the file is within the project images folder (non-Windows version)
+  return strncmp($file, $folder, strlen($folder)) === 0;
+}

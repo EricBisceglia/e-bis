@@ -52,6 +52,9 @@ $page_stylesheet = 'cv';
           <span><?=__('cv_tech')?></span>
           <a href="./cybersecurity"><?=__('cv_security')?></a>
           <a href="./gamedesign"><?=__('cv_games')?></a>
+          <a href="https://github.com/EricBisceglia/e-bis" target="_blank">
+            <?=__('cv_source')?>
+          </a>
           <a href="https://www.linkedin.com/in/eric-bisceglia" target="_blank">
             <?=__('cv_contact')?>
           </a>

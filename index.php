@@ -60,9 +60,9 @@ $page_stylesheet = 'homepage';
         </nav>
 
         <p class="contact">
-          <a href="https://www.linkedin.com/in/eric-bisceglia/">
-            <?=__('home_contact')?>
-          </a>
+          <a href="https://github.com/EricBisceglia/e-bis" target="_blank"><?=__('home_source')?></a>
+          &nbsp;
+          <a href="https://www.linkedin.com/in/eric-bisceglia/" target="_blank"><?=__('home_contact')?></a>
         </p>
       </main>
 

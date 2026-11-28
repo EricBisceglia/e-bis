@@ -111,6 +111,11 @@
 .entry-delete summary       { text-decoration: underline; text-underline-offset: 3px              ;
                               cursor: pointer;                                                    }
 .entry-delete p             { margin: 16px 0;                                                     }
+.entry-images               { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr))     ;
+                              gap: 20px;                                                          }
+.entry-images figure        { min-width: 0; margin: 0;                                            }
+.entry-images img           { display: block; width: 100%; height: 150px; object-fit: contain;    }
+.entry-images figcaption    { margin-top: 8px; font-size: 13px; overflow-wrap: anywhere;          }
 
 /*********************************************************************************************************************/
 /*                                                                                                                   */
@@ -134,4 +139,5 @@
                           { grid-column: 1 / -1;                                            }
 .admin-entry-table td::before
                           { content: attr(data-label); display: block                       ;
-                            margin-bottom: 4px; font-size: 13px;                          } }
+                            margin-bottom: 4px; font-size: 13px;                            }
+.entry-images             { grid-template-columns: repeat(2, minmax(0, 1fr));             } }
