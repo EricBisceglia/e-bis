@@ -37,11 +37,11 @@ ___('home_games',    'FR', "Game design");
 
 // Summary
 ___('home_summary', 'EN', <<<EOT
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+Computers have been a big part of my life for as long as I can remember. What started as a fascination has been my career since 2006, taking me through technical work, management, and cybersecurity. Alongside it all, I've kept designing games, a passion that gives me room to experiment with technology and explore new ideas.
 EOT
 );
 ___('home_summary', 'FR', <<<EOT
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+Aussi loin que je m'en souvienne, j'ai toujours été fasciné par les ordinateurs. J'en ai fait mon métier en 2006. Mon parcours m'a mené de la technique au management, en passant par la cybersécurité. En parallèle, je conçois des jeux, une passion qui me laisse la liberté d'exérimenter avec la technologie et d'explorer de nouvelles idées.
 EOT
 );
 
